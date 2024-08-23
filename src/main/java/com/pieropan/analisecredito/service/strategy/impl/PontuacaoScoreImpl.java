@@ -1,10 +1,16 @@
 package com.pieropan.analisecredito.service.strategy.impl;
 
+import com.pieropan.analisecredito.constantes.MensagemConstante;
 import com.pieropan.analisecredito.domain.Proposta;
+import com.pieropan.analisecredito.exception.StrategyException;
 import com.pieropan.analisecredito.service.strategy.CalculoPonto;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
+@Order(2)
+@Component
 public class PontuacaoScoreImpl implements CalculoPonto {
 
     @Override
@@ -12,7 +18,7 @@ public class PontuacaoScoreImpl implements CalculoPonto {
         int score = score();
 
         if (score <= 200) {
-            throw new RuntimeException("Score baixo");
+            throw new StrategyException(String.format(MensagemConstante.PONTUACAO_SERASA_BAIXA, proposta.getUsuario().getNome()));
         }else if (score <= 400){
             return 150;
         }else if (score <= 600){
